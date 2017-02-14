@@ -1,4 +1,4 @@
-class SessionsController < ApplicationController
+class API::SessionsController < ApplicationController
   include Shared::UserTokenConcern
 
   def create
@@ -7,15 +7,15 @@ class SessionsController < ApplicationController
     user = User.find_by(email: email)
 
     if user.try(:authenticate, password)
-      render json: { success: true, token: create_user_token(user) },
-        status: :created
+      token = create_user_token(user)
+      render json: { token: token }, status: :created
     else
-      render json: { success: false }, status: :unauthorized
+      render json: {}, status: :not_found
     end
   end
 
   before_action :authenticate_request, only: :test
   def test
-    render json: {success: true, user: current_user}
+    render json: current_user
   end
 end
