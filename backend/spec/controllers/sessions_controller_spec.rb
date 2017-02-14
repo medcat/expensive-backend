@@ -10,7 +10,7 @@ RSpec.describe SessionsController, type: :controller do
           params: { session: { email: "a@b.c", password: user.password } }
 
         expect(response).to have_http_status :unauthorized
-        expect(JSON.load(response.body)).to eq "success" => false
+        expect(json[:success]).to eq false
       end
     end
 
@@ -21,7 +21,7 @@ RSpec.describe SessionsController, type: :controller do
           params: { session: { email: user.email, password: "invalid" } }
 
         expect(response).to have_http_status :unauthorized
-        expect(JSON.load(response.body)).to eq "success" => false
+        expect(json[:success]).to eq false
       end
     end
 
@@ -33,12 +33,34 @@ RSpec.describe SessionsController, type: :controller do
           params: { session: { email: user.email, password: user.password } }
 
         expect(response).to have_http_status :created
-        body = JSON.load(response.body)
-        expect(body["success"]).to be true
-        secret = Rails.application.secrets.jwt_secret
-        payload, = JWT.decode(body["token"], secret, true, algorithm: "HS256")
-        expect(payload["id"]).to eq user.id
+        expect(json[:success]).to be true
+        expect(user_token_id(json[:token])).to eq user.id
       end
+    end
+  end
+
+  describe "GET #test" do
+    context "with an invalid token" do
+      it "returns a failure" do
+        get :test
+
+        expect(response).to have_http_status :unauthorized
+        expect(response.header["WWW-Authenticate"]).to \
+          eq "Bearer realm=\"Application\""
+        expect(json[:success]).to be false
+      end
+    end
+  end
+
+  context "with a valid token" do
+    it "returns a success" do
+      user = create(:user)
+      token = create_user_token(user)
+      request.headers["Authorization"] = "Bearer #{token}"
+      get :test
+
+      expect(response).to have_http_status :ok
+      expect(json[:success]).to be true
     end
   end
 end
