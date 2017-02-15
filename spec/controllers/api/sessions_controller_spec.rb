@@ -32,10 +32,10 @@ RSpec.describe API::SessionsController, type: :controller do
     end
   end
 
-  describe "GET #test" do
+  describe "GET #renew" do
     context "with an invalid token" do
       it "returns a failure" do
-        get :test, params: { format: :json }
+        get :renew, params: { format: :json }
 
         expect(response).to have_http_status :unauthorized
         expect(response.header["WWW-Authenticate"]).to \
@@ -48,8 +48,8 @@ RSpec.describe API::SessionsController, type: :controller do
         user = create(:user)
         token = create_user_token(user)
         request.headers["Authorization"] = "Bearer #{token}"
-        get :test, params: { format: :json }
-        expect(response).to have_http_status :ok
+        get :renew, params: { format: :json }
+        expect(response).to have_http_status :created
       end
     end
   end

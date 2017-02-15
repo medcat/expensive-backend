@@ -25,13 +25,11 @@ gem "rspec-rails"
 
 gem "versioncake"
 gem "jwt"
-gem "active_model_serializers"
 gem "will_paginate"
 
-gem "baby_squeel"
+gem "oj"
 gem "groupdate"
 gem "seedbank"
-gem "date_validator"
 gem "money-rails", "~> 1.8"
 gem "pundit", "~> 1.1"
 

@@ -1,6 +1,6 @@
 class API::SessionsController < ApplicationController
   include Shared::UserTokenConcern
-  before_action :authenticate_request, only: [:renew, :test]
+  before_action :authenticate_request, only: [:renew]
 
   def create
     params.require(:session).permit(:email, :password)
@@ -11,16 +11,12 @@ class API::SessionsController < ApplicationController
       token = create_user_token(user)
       render json: { token: token }, status: :created
     else
-      render json: {}, status: :not_authorized
+      head :unauthorized
     end
   end
 
   def renew
     token = create_user_token(current_user)
     render json: { token: token }, status: :created
-  end
-
-  def test
-    render json: current_user
   end
 end

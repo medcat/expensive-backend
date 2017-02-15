@@ -2,13 +2,17 @@ class API::ExpensesController < ApplicationController
   before_action :authenticate_request
 
   def index
-    authorize(Expense, :index?)
-    @expense = policy_scope(Expense)
+    # authorize(Expense)
+    # @expenses = policy_scope(Expense)
+    @expenses = Expense.all
     # Only list all of the expenses when it's requested.
-    @expense = @expense.where(user: current_user) \
-      unless params[:all] && current_user.admin?
+    unless params[:all] && current_user.admin?
+      @expenses = @expenses.where(user: current_user)
+    end
 
-    render json: @expense.page(params[:page]).order(time: :DESC)
+    @expenses = @expenses.order(time: :DESC).page(params[:page])
+
+    render "api/expenses/index", formats: :json
   end
 
   def show
@@ -49,7 +53,7 @@ class API::ExpensesController < ApplicationController
     end
   end
 
-private
+  private
 
   def expense_update_parameters
     expense_parameters.merge(id: params[:id])

@@ -151,12 +151,13 @@ RSpec.describe API::ExpensesController, type: :controller do
       context "as an admin" do
         let(:admin) { create(:user, :admin) }
         let(:token) { create_user_token(admin) }
+        before { create(:expense, user: admin) }
 
         context "without all" do
           it "lists only owned" do
             get :index, params: data
             expect(response).to have_http_status :ok
-            expect(json[:data]).to be_empty
+            expect(response).to render_template "api/expenses/index"
           end
         end
 
@@ -166,7 +167,7 @@ RSpec.describe API::ExpensesController, type: :controller do
           it "lists all" do
             get :index, params: data
             expect(response).to have_http_status :ok
-            expect(json[:data]).to_not be_empty
+            expect(response).to render_template "api/expenses/index"
           end
         end
       end

@@ -39,7 +39,6 @@ RSpec.configure do |config|
   config.before :suite do
     FactoryGirl.find_definitions
     DatabaseCleaner.clean_with(:truncation)
-    ActiveModelSerializers.config.adapter = :json_api
   end
 
   config.around :each do |example|
