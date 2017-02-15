@@ -1,0 +1,91 @@
+@import "dashboard/sidebar";
+
+.dashboard-content {
+  @include span-columns(12 of 16);
+}
+
+.dashboard-topfigure {
+  background-color: $main-color;
+  padding: 1em;
+  margin-bottom: 1em;
+  border-radius: 0.25em;
+  box-shadow: $main-shadow;
+  color: $main-font-color;
+  text-shadow: $main-text-shadow-color 0 1px 1px;
+  @include span-columns(12 of 12);
+
+  &-item {
+    @include span-columns(3 of 12);
+
+    &-figure {
+      font-weight: bold;
+      font-size: 1.2em;
+    }
+  }
+}
+
+.dashboard-graph {
+  @include span-columns(12 of 12);
+  background-color: $dark-background-color;
+  border-radius: 0.25em;
+  padding: 1em;
+  margin-bottom: 1em;
+  box-shadow: $main-shadow;
+  text-shadow: $main-text-shadow-color 0 1px 1px;
+}
+
+.dashboard-expenses, .dashboard-reports {
+  @include span-columns(8 of 12);
+  background-color: $dark-background-color;
+  border-radius: 0.25em;
+  padding: 1em;
+  margin-bottom: 1em;
+  box-shadow: $main-shadow;
+  text-shadow: $main-text-shadow-color 0 1px 1px;
+
+  &-title {
+    margin: 0;
+    padding: 0;
+  }
+
+  &-list {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  &-item {
+    &-datetime { color: #666; padding: 0 0.5em;}
+    &-description {
+      display: block;
+      width: 60%;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      float: right;
+    }
+  }
+
+  &-link {
+    display: block;
+    padding: 0.5em;
+    color: #444;
+    text-decoration: none;
+    border-bottom: 1px solid $light-darker-background-color;
+
+    &:hover { background-color: $darker-background-color; }
+
+  }
+
+  &-item:last-child &-link { border-bottom: none; }
+}
+
+.dashboard-reports {
+  @include span-columns(4 of 12);
+
+  &-link {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+}

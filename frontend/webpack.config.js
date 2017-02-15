@@ -1,7 +1,7 @@
 var path = require("path");
 var HtmlWebpackPlugin = require("html-webpack-plugin");
-var ExtractTextPlugin = require("extract-text-webpack-plugin")
-
+var ExtractTextPlugin = require("extract-text-webpack-plugin");
+var webpack = require("webpack");
 var extractSass = new ExtractTextPlugin("assets/style.css");
 
 module.exports = {
@@ -23,13 +23,25 @@ module.exports = {
       exclude: /node_modules/,
       use: {
         loader: "babel-loader",
-        options: {presets: ["react", ["es2015", {modules: false}]]}
+        options: {
+          presets: ["react", ["es2015", {modules: false}]]
+        }
       }
     }, {
       test: /\.(sass|scss|css)$/,
       use: extractSass.extract({
         fallback: "style-loader",
-        use: ["css-loader", "sass-loader"]})
+        use: ["css-loader", "resolve-url-loader", "sass-loader?sourceMap"]})
+    }, {
+      test: /\.(jpg|png|svg|gif)$/,
+      use: {
+        loader: "file-loader",
+        options: {
+          name: "[sha256:hash:base62].[name].[ext]",
+          publicPath: "images/",
+          outputPath: "assets/images/"
+        }
+      }
     }]
   },
 
@@ -41,7 +53,17 @@ module.exports = {
   },
 
   plugins: [
-    new HtmlWebpackPlugin({ inject: true, template: "public/index.html" }),
+    new HtmlWebpackPlugin({ inject: true, template: "src/index.html" }),
+    new webpack.ProvidePlugin({ $: "jquery" }),
     extractSass
-  ]
+  ],
+
+  devServer: {
+    proxy: {
+      "/api/**": {
+        target: "http://localhost:3000",
+        secure: false
+      }
+    }
+  }
 }

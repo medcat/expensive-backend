@@ -1,0 +1,46 @@
+.dashboard-sidebar {
+  @include span-columns(4);
+  background-color: $under-color;
+  color: $font-color;
+  text-shadow: $under-text-shadow-color 0 1px 1px;
+  border-radius: 0.25em;
+  box-shadow: $under-shadow;
+
+  &-list {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  &-profile {
+    text-align: center;
+    padding: 1em 0;
+
+    &-icon {
+      background-color: $dark-main-color;
+      border-radius: 50%;
+    }
+  }
+
+  &-item {
+    display: block;
+    border-top: 1px solid $light-dark-under-color;
+    &-link {
+      display: block;
+      padding: 0.5em 1em;
+      text-decoration: none;
+      color: $font-color;
+
+      &:hover { background-color: $dark-under-color; }
+
+      i { width: 1em; margin-right: 0.5em; text-align: center; }
+    }
+
+
+    &-active {
+      background-color: $secondary-color;
+
+      &:hover { background-color: $light-dark-secondary-color; }
+    }
+  }
+}

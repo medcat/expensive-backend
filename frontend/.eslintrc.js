@@ -6,7 +6,7 @@ module.exports = {
       "jsx": true
     }
   },
-  "env": { "browser": true, "es6": true },
+  "env": { "node": true, "browser": true, "es6": true, "jquery": true },
   "plugins": [
     "react"
   ],
@@ -14,4 +14,8 @@ module.exports = {
     "eslint:recommended",
     "plugin:react/recommended"
   ],
+  "rules": { "no-console": "off" },
+  "globals": {
+    "skrollr": false
+  }
 }

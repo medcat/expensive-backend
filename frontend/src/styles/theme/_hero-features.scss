@@ -1,0 +1,72 @@
+.hero {
+  background-image: url("images/desk.jpg");
+  background-position: center;
+  background-size: cover;
+  min-height: 80vh;
+  position: absolute;
+  top: 3em;
+  left: 0;
+  right: 0;
+  z-index: -1;
+  padding-top: 10vh;
+  text-align: center;
+  box-shadow: inline $header-shadow;
+  margin-bottom: 20em;
+
+  &-header, &-tagline {
+    padding: 0;
+    margin: 0;
+    text-shadow: rgba($header-text-shadow-color, 0.7) 1px 2px 5px;
+    color: $font-color;
+  }
+  &-header { font-size: 3em; }
+  &-tagline { font-size: 1.5em; }
+
+  &-seperator {
+    border: none;
+    max-width: 30em;
+    border-top: 1px dashed rgba($font-color, 0.3);
+    border-bottom: 1px dashed rgba($header-text-shadow-color, 0.21);
+  }
+
+}
+
+.minihero {
+  background-image: image-url("background/pineapple-desk.jpg");
+  background-position: center;
+  background-size: cover;
+  min-height: 20vh;
+  position: absolute;
+  top: 3em;
+  left: 0;
+  right: 0;
+  z-index: -1;
+  box-shadow: inline $header-shadow;
+
+  &-after {
+    margin-top: 20vh;
+  }
+}
+
+.feature {
+  margin-top: 80vh;
+
+  &-item {
+    @include span-columns(4);
+    @include pad();
+    text-align: center;
+
+    &:last-child {
+      border-right: none;
+    }
+
+    &-icon {
+      max-width: 75%;
+      border-radius: 50%;
+    }
+
+    &-body {
+      font-size: 12px;
+    }
+  }
+}

@@ -1,0 +1,40 @@
+$grid-columns: 16 !global;
+// $visual-grid: true !global;
+// $visual-grid-index: front !global;
+
+$main-color: #327ccb;
+$light-dark-main-color: darken($main-color, 5%);
+$dark-main-color: darken($main-color, 10%);
+$darker-main-color: darken($main-color, 20%);
+$darkest-main-color: darken($main-color, 30%);
+$font-color: #f7efce;
+$main-font-color: $font-color;
+$main-text-shadow-color: rgba(#444, 0.3);
+$main-shadow: black 0 3px 3px -3px;
+
+// $under-color: #303048;
+$under-color: $main-color;
+$light-dark-under-color: darken($under-color, 5%);
+$dark-under-color: darken($under-color, 10%);
+$under-text-color: $font-color;
+$under-shadow: black 0 3px 3px -3px;
+$under-text-shadow-color: rgba(#444, 0.3);
+
+$secondary-color: #00B057;
+$light-dark-secondary-color: darken($secondary-color, 5%);
+$dark-secondary-color: darken($secondary-color, 10%);
+$secondary-font-color: #f7ceef;
+
+$tertiary-color: #9D2E31;
+$dark-tertiary-color: darken($tertiary-color, 10%);
+$light-tertiary-color: lighten($tertiary-color, 10%);
+$tertiary-font-color: #cef7ef;
+$tertiary-text-shadow-color: rgba(#444, 0.3);
+
+$header-text-shadow-color: rgba(#444, 0.3);
+$header-shadow: black 0 0 3px;
+
+$background-color: #ddd;
+$dark-background-color: darken(#ddd, 10%);
+$light-darker-background-color: darken($background-color, 15%);
+$darker-background-color: darken($background-color, 20%);

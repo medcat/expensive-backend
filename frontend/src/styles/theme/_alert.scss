@@ -1,0 +1,21 @@
+.top-alert, .top-notice {
+  position: fixed;
+  top: 5em;
+  width: auto;
+  left: 1em;
+  right: 1em;
+  padding: 1em;
+  border-radius: 0.25em;
+}
+
+.top-notice {
+  border: 1px solid $dark-secondary-color;
+  background-color: $secondary-color;
+  color: $secondary-font-color;
+}
+
+.top-alert {
+  border: 1px solid $dark-tertiary-color;
+  background-color: $tertiary-color;
+  color: $tertiary-font-color;
+}
