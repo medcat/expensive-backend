@@ -2,9 +2,8 @@ class API::ExpensesController < ApplicationController
   before_action :authenticate_request
 
   def index
-    # authorize(Expense)
-    # @expenses = policy_scope(Expense)
-    @expenses = Expense.all
+    authorize(Expense)
+    @expenses = policy_scope(Expense)
     # Only list all of the expenses when it's requested.
     unless params[:all] && current_user.admin?
       @expenses = @expenses.where(user: current_user)
@@ -12,29 +11,30 @@ class API::ExpensesController < ApplicationController
 
     @expenses = @expenses.order(time: :DESC).page(params[:page])
 
-    render "api/expenses/index", formats: :json
+    render :index
   end
 
   def show
     @expense = Expense.find(params[:id])
     authorize @expense
-    render json: @expense
+    render :show
   end
 
   def destroy
     @expense = Expense.find(params[:id])
     authorize @expense
     @expense.destroy!
-    head :no_content
+    render json: {}, status: :no_content
   end
 
   def create
-    @expense = CreateExpenseService.new(expense_parameters)
+    @expense = Expense.new(expense_parameters)
+    @expense.user = current_user
     authorize @expense
 
-    if result = @expense.save
-      render json: @expense, status: :created,
-        location: api_expense_path(id: result)
+    if @expense.save
+      render :show, status: :created,
+        location: api_expense_path(id: @expense)
     else
       render json: { errors: @expense.errors.details },
         status: :unprocessable_entity
@@ -42,11 +42,12 @@ class API::ExpensesController < ApplicationController
   end
 
   def update
-    @expense = UpdateExpenseService.new(expense_update_parameters)
+    @expense = Expense.find(params[:id])
     authorize @expense
 
-    if result = @expense.save
-      render json: @expense, status: :ok, location: api_expense_path(id: result)
+    if result = @expense.update(expense_parameters)
+      @expense = result
+      render :show, status: :ok, location: api_expense_path(id: @expense)
     else
       render json: { errors: @expense.errors.details },
         status: :unprocessable_entity
@@ -55,15 +56,14 @@ class API::ExpensesController < ApplicationController
 
   private
 
-  def expense_update_parameters
-    expense_parameters.merge(id: params[:id])
-  end
-
   def expense_parameters
-    expense_params.merge(user: current_user)
-  end
+    expense = params.require(:expense)
+    data = {}
+    { amount: :amount_unit, currency: :amount_currency, time: :time,
+      description: :description }.each do |given, actual|
+      data[actual] = expense[given] if expense[given]
+    end
 
-  def expense_params
-    params.require(:expense).permit(:amount, :currency, :time, :description)
+    data
   end
 end

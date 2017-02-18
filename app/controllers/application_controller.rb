@@ -26,7 +26,6 @@ class ApplicationController < ActionController::Metal
   append_view_path "#{Rails.root}/app/views"
   wrap_parameters format: [:json]
 
-
   include Pundit
   include Application::AuthenticationConcern
   include Application::ErrorConcern

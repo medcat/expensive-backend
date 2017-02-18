@@ -1,11 +1,12 @@
 require 'rails_helper'
 
-RSpec.describe ExpensePolicy do
+RSpec.describe ReportPolicy do
 
-  let(:resource) { create(:expense) }
+  let(:resource) { create(:report) }
   let(:user) { resource.user }
   let(:admin) { create(:user, :admin) }
   let(:random) { create(:user) }
+
   subject { described_class }
 
   permissions ".scope" do
@@ -23,7 +24,7 @@ RSpec.describe ExpensePolicy do
       let(:actor) { admin }
 
       it "resolves properly" do
-        expect(subject.resolve).to be resource.class
+        expect(subject.resolve.where_values_hash).to eq("user_id" => actor.id)
       end
     end
   end
@@ -33,11 +34,11 @@ RSpec.describe ExpensePolicy do
       expect(subject).to permit(user, resource)
     end
 
-    it "grants access if user is admin" do
-      expect(subject).to permit(admin, resource)
+    it "denies access even if user is admin" do
+      expect(subject).to_not permit(admin, resource)
     end
 
-    it "denies access otherwise" do
+    it "denies access to everyone else" do
       expect(subject).to_not permit(random, resource)
     end
   end

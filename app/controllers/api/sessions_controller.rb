@@ -11,7 +11,7 @@ class API::SessionsController < ApplicationController
       token = create_user_token(user)
       render json: { token: token }, status: :created
     else
-      head :unauthorized
+      render json: {}, status: :unauthorized
     end
   end
 
