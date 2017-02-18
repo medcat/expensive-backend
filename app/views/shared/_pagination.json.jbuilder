@@ -9,15 +9,15 @@ json.meta do
     json.total total_pages
 
     json.links((1..total_pages).map do |i|
-      api_expenses_path(page: i)
+      url_for(page: i)
     end)
   end
 
   json.links do
-    json.next api_expenses_path(page: next_page)
-    json.prev api_expenses_path(page: prev_page)
-    json.self api_expenses_path(page: current_page)
-    json.none api_expenses_path
+    json.next url_for(page: next_page)
+    json.prev url_for(page: prev_page)
+    json.self url_for
+    json.none url_for(page: nil)
   end
 end
 

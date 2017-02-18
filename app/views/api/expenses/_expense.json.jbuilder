@@ -5,7 +5,6 @@ json.(expense, :description)
 json.link api_expense_path(expense)
 json.user do
   json.(expense.user, :id, :email)
-  json.link ""
 end
 
 policy = ExpensePolicy.new(@current_user, expense)

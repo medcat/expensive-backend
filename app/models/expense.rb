@@ -1,7 +1,6 @@
 class Expense < ApplicationRecord
   monetize :amount_unit, with_model_currency: :amount_currency, allow_nil: true
   belongs_to :user
-  has_and_belongs_to_many :reports
 
   MAXIMUM_AMOUNT_VALUE = (1 << 32) - 1
 

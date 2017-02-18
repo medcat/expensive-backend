@@ -7,6 +7,7 @@ Rails.application.routes.draw do
     end
 
     resources :expenses, except: [:new, :edit]
+    resources :reports, except: [:new, :edit]
 
     get :dashboard, to: "dashboard#index"
   end

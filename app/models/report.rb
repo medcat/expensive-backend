@@ -1,6 +1,5 @@
 class Report < ApplicationRecord
   belongs_to :user
-  has_and_belongs_to_many :expenses
 
   validates :user, presence: true
   validates :name, presence: true, length: { in: 5..120 }
@@ -9,6 +8,15 @@ class Report < ApplicationRecord
   validate :start_time_date
   validate :stop_time_date
   validate :time_positions
+
+  def expenses(force_reload = false)
+    @_expenses = nil if force_reload
+    @_expenses ||= Expense.where(user: user, time: start..stop)
+  end
+
+  def expense_ids
+    expenses.pluck(:id)
+  end
 
 private
 

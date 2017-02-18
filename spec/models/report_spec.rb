@@ -79,4 +79,19 @@ RSpec.describe Report, type: :model do
       it { is_expected.to be_valid }
     end
   end
+
+  context "when loading expenses" do
+    let(:user) { create(:user) }
+    let(:report) { create(:report, user: user) }
+    let(:expenses) { create_list(:expense, 10, user: user) }
+    before { expenses }
+
+    it "does not error" do
+      expect(report.expenses.size).to be 10
+    end
+
+    it "matches the ids" do
+      expect(report.expense_ids).to eq expenses.map(&:id)
+    end
+  end
 end

@@ -1,10 +1,6 @@
 require 'rails_helper'
 
 RSpec.describe API::ExpensesController, type: :controller do
-  # Note that the logic for validation is tested in
-  # services/create_expense_service_spec.rb, and so we only do a small test
-  # run for the expected response on a failure.
-
   describe "POST #create" do
     let(:data) { { expense: expense_data, format: :json } }
     let(:expense_data) { { amount: "10.00", currency: "USD", time: "Fri, 14 Aug 2015 08:40:39 UTC +00:00" } }
@@ -53,8 +49,8 @@ RSpec.describe API::ExpensesController, type: :controller do
     let(:user) { original.user }
     let(:token) { create_user_token(user) }
     let(:data) { { id: original.id, expense: expense_data, format: :json } }
-    let(:description) { "foo bar" }
-    let(:expense_data) { { description: description } }
+    let(:currency) { "AUD" }
+    let(:expense_data) { { currency: currency } }
 
     context "without authentication" do
       it "fails" do
@@ -70,7 +66,18 @@ RSpec.describe API::ExpensesController, type: :controller do
           put :update, params: data
           expect(response).to have_http_status :ok
           original.reload
-          expect(original.description).to eq description
+          expect(original.amount_currency).to eq currency
+        end
+
+        context "with bad data" do
+          let(:currency) { "UUU" }
+
+          it "fails" do
+            put :update, params: data
+            expect(response).to have_http_status :unprocessable_entity
+            original.reload
+            expect(original.amount_currency).to_not eq currency
+          end
         end
       end
 
@@ -81,7 +88,7 @@ RSpec.describe API::ExpensesController, type: :controller do
           put :update, params: data
           expect(response).to have_http_status :not_found
           original.reload
-          expect(original.description).to_not eq description
+          expect(original.amount_currency).to_not eq currency
         end
       end
 
@@ -92,7 +99,7 @@ RSpec.describe API::ExpensesController, type: :controller do
           put :update, params: data
           expect(response).to have_http_status :not_found
           original.reload
-          expect(original.description).to_not eq description
+          expect(original.amount_currency).to_not eq currency
         end
       end
     end
