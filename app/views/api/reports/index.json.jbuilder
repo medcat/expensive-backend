@@ -1,5 +1,5 @@
 json.data do
-  json.array!(@expenses, partial: "api/reports/report", as: :report)
+  json.array!(@reports, partial: "api/reports/report", as: :report)
 end
 
 json.partial! "shared/pagination", group: @reports

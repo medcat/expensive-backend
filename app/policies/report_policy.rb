@@ -20,7 +20,7 @@ class ReportPolicy < ApplicationPolicy
 
   class Scope < Scope
     def resolve
-      super.where(user: @user)
+      super.where(user_id: @user.id)
     end
   end
 end

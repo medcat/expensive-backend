@@ -7,8 +7,10 @@ RSpec.describe Report, type: :model do
     { user: user_data,
       start: start_data,
       stop: stop_data,
-      name: name_data
+      name: name_data,
+      currency: currency_data
     } }
+  let(:currency_data) { "USD" }
   let(:user_data) { create(:user) }
   let(:start_data) { 3.weeks.ago }
   let(:stop_data) { 1.week.ago }
@@ -62,6 +64,16 @@ RSpec.describe Report, type: :model do
 
     context "with a long name" do
       let(:name_data) { "x" * 121 }
+      it { is_expected.to_not be_valid }
+    end
+
+    context "with no currency" do
+      let(:currency_data) { nil }
+      it { is_expected.to_not be_valid }
+    end
+
+    context "with an invalid currency" do
+      let(:currency_data) { "UUU" }
       it { is_expected.to_not be_valid }
     end
   end

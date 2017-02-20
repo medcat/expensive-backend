@@ -20,8 +20,7 @@ json.data do
   end
 
   json.reports do
-    json.array! [] do |report|
-    end
+    json.array!(recent_reports, partial: "api/reports/report", as: :report)
   end
 
   json.graph(graph_items)

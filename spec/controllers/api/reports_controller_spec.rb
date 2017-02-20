@@ -3,7 +3,11 @@ require 'rails_helper'
 RSpec.describe API::ReportsController, type: :controller do
   describe "POST #create" do
     let(:data) { { report: report_data, format: :json } }
-    let(:report_data) { { name: "A Report", start: 3.weeks.ago.to_s, stop: 1.week.ago.to_s } }
+    let(:report_data) {
+      { name: "A Report",
+        start: 3.weeks.ago.to_s,
+        stop: 1.week.ago.to_s,
+        currency: "USD" } }
 
     context "without authentication" do
       it "returns a failure" do

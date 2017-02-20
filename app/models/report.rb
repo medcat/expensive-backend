@@ -5,6 +5,8 @@ class Report < ApplicationRecord
   validates :name, presence: true, length: { in: 5..120 }
   validates :start, presence: true
   validates :stop, presence: true
+  validates :currency, presence: true,
+    inclusion: { in: Money::Currency.map(&:iso_code) }
   validate :start_time_date
   validate :stop_time_date
   validate :time_positions

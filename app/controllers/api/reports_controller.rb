@@ -7,9 +7,13 @@ class API::ReportsController < ApplicationController
     render :index
   end
 
+  ALLOWED_PERIODS = %w[hour day week month year].freeze
+
   def show
     @report = Report.find(params[:id])
     authorize(@report)
+    @expenses = scope_with_params(@report.expenses)
+    @period = ALLOWED_PERIODS.include?(params[:period]) ? params[:period] : "week"
     render :show
   end
 
@@ -48,6 +52,16 @@ class API::ReportsController < ApplicationController
 private
 
   def report_parameters
-    params.require(:report).permit(:start, :stop, :name)
+    params.require(:report).permit(:start, :stop, :name, :currency)
+  end
+
+  def scope_with_params(expenses)
+    return expenses unless params[:start] && params[:stop]
+    start = ::DateTime.parse(params[:start])
+    stop = ::DateTime.parse(params[:stop])
+    return expenses if stop < start
+    expenses.where("time BETWEEN ? AND ?", start, stop)
+  rescue
+    expenses
   end
 end

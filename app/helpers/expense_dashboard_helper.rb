@@ -3,6 +3,10 @@ module ExpenseDashboardHelper
     @expenses.order(time: :DESC).limit(5)
   end
 
+  def recent_reports
+    @reports.order(created_at: :DESC).limit(5)
+  end
+
   def graph_items
     past_month = 1.month.ago
     @expenses
